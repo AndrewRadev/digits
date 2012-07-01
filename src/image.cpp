@@ -23,12 +23,6 @@ Pixel& image_get_pixel(Image* image, int i, int j) {
 	return *(image->operator()(i, j));
 }
 
-void ensure_grayscale_color_table(Image* image) {
-	if (image->TellBitDepth() < 16) {
-		CreateGrayscaleColorTable(*image);
-	}
-}
-
 void image_to_file(Image* image, const char* filename) {
 	image->WriteToFile(filename);
 }

@@ -1,3 +1,6 @@
+#ifndef IMAGE_H
+#define IMAGE_H
+
 #include <stdlib.h>
 #include <easybmp/EasyBMP.h>
 
@@ -12,5 +15,6 @@ int image_height(Image* image);
 int image_width(Image* image);
 Pixel &image_get_pixel(Image* image, int i, int j);
 
-void ensure_grayscale_color_table(Image* image);
 void image_to_file(Image* image, const char* filename);
+
+#endif
