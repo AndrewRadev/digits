@@ -21,6 +21,9 @@ dev: all
 main: all
 	$(CXX) $(LIBS) -o main main.cpp $(TARGET)
 
+run: main
+	./main examples/basic.bmp examples/basic_processed.bmp
+
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)
 	ar rcs $@ $(OBJECTS)

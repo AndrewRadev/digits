@@ -13,30 +13,27 @@ int main(int argc, char* argv[])
 	}
 
 	// declare and read the bitmap
-	Image* input = image_from_file(argv[1]);
+	Image* image = image_from_file(argv[1]);
+	int height   = image_height(image);
+	int width    = image_width(image);
+
 
 	// convert each pixel to grayscale using RGB->YUV
-	for (int j=0; j < input->TellHeight(); j++) {
-		for (int i=0; i < input->TellWidth(); i++) {
-			int Temp = (int) floor( 0.299*input->operator()(i,j)->Red +
-						0.587*input->operator()(i,j)->Green +
-						0.114*input->operator()(i,j)->Blue );
-			ebmpBYTE TempBYTE = (ebmpBYTE) Temp;
-			input->operator()(i,j)->Red   = TempBYTE;
-			input->operator()(i,j)->Green = TempBYTE;
-			input->operator()(i,j)->Blue  = TempBYTE;
+	for (int j = 0; j < height; j++) {
+		for (int i=0; i < width; i++) {
+			Pixel &pixel = image_get_pixel(image, i, j);
+			Byte mix = (Byte)floor(0.299*pixel.Red + 0.587*pixel.Green + 0.114*pixel.Blue);
+
+			pixel.Red   = mix;
+			pixel.Green = mix;
+			pixel.Blue  = mix;
 		}
 	}
 
-	// Create a grayscale color table if necessary
-	if( input->TellBitDepth() < 16 ) {
-		CreateGrayscaleColorTable( *input );
-	}
+	ensure_grayscale_color_table(image);
+	image_to_file(image, argv[2]);
 
-	// write the output file
-	input->WriteToFile( argv[2] );
-
-	free_image(input);
+	free_image(image);
 
 	return 0;
 }
