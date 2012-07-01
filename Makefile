@@ -1,33 +1,30 @@
-CC=g++ $(CFLAGS)
-CFLAGS=-g -O2 -Wall -Wextra -Isrc -Ilib -rdynamic -DNDEBUG $(OPTFLAGS)
+CC=cc $(CFLAGS)
+CXX=g++ $(CFLAGS)
+CFLAGS=-g -O2 -Wall -Wextra -I./src -I./lib -rdynamic -DNDEBUG $(OPTFLAGS)
 LIBS=-ldl $(OPTLIBS)
 PREFIX?=/usr/local
 
-SOURCES=$(wildcard src/**/*.cpp src/*.cpp)
+SOURCES=$(wildcard src/**/*.cpp src/*.cpp lib/**/*.cpp lib/*.cpp)
 OBJECTS=$(patsubst %.cpp,%.o,$(SOURCES))
 
 TEST_SRC=$(wildcard tests/*_tests.c)
 TESTS=$(patsubst %.cpp,%,$(TEST_SRC))
 
 TARGET=libdigits.a
-SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 
 # The Target Build
-all: $(TARGET) $(SO_TARGET) tests
+all: $(TARGET)
 
 dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
 dev: all
 
 main: all
-	$(CC) -o main main.cpp $(TARGET)_
+	$(CXX) $(LIBS) -o main main.cpp $(TARGET)
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)
 	ar rcs $@ $(OBJECTS)
 	ranlib $@
-
-$(SO_TARGET): $(TARGET) $(OBJECTS)
-	$(CC) -shared -o $@ $(OBJECTS)
 
 build:
 	@mkdir -p build
