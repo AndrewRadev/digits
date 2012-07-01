@@ -13,16 +13,16 @@ TESTS=$(patsubst %.cpp,%,$(TEST_SRC))
 TARGET=libdigits.a
 
 # The Target Build
-all: $(TARGET)
+all: $(TARGET) bin/grayscale
 
 dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
 dev: all
 
-main: all
-	$(CXX) $(LIBS) -o main main.cpp $(TARGET)
+bin/grayscale: $(TARGET)
+	$(CXX) $(LIBS) -o bin/grayscale grayscale.cpp $(TARGET)
 
-run: main
-	./main examples/basic.bmp examples/basic_processed.bmp
+run: bin/grayscale
+	./bin/grayscale examples/lenna.bmp examples/lenna_processed.bmp
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)
