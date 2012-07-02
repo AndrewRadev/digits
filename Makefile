@@ -21,8 +21,11 @@ dev: all
 bin/grayscale: $(TARGET)
 	$(CXX) $(LIBS) -o bin/grayscale grayscale.cpp $(TARGET)
 
-run: bin/grayscale
-	./bin/grayscale examples/lenna.bmp examples/lenna_processed.bmp
+bin/threshold: $(TARGET)
+	$(CXX) $(LIBS) -o bin/threshold threshold.cpp $(TARGET)
+
+run: bin/grayscale bin/threshold
+	./bin/threshold examples/lenna.bmp examples/lenna_processed.bmp
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)
