@@ -1,3 +1,4 @@
+#include "dbg.h"
 #include "image.h"
 
 Image* image_from_file(const char *filename) {
@@ -7,12 +8,16 @@ Image* image_from_file(const char *filename) {
 	return image;
 }
 
-Image* image_blank_copy(Image* image) {
+Image* image_blank_copy(Image* image, int width, int height) {
 	Image* copy = new Image;
-	copy->SetSize(image->TellWidth(), image->TellHeight());
+	copy->SetSize(width, height);
 	copy->SetBitDepth(image->TellBitDepth());
 
 	return copy;
+}
+
+Image* image_blank_copy(Image* image) {
+	return image_blank_copy(image, image->TellWidth(), image->TellHeight());
 }
 
 void free_image(Image* image) {
@@ -46,4 +51,16 @@ void image_set_pixel_intensity(Image* image, int i, int j, int intensity) {
 
 void image_to_file(Image* image, const char* filename) {
 	image->WriteToFile(filename);
+}
+
+Matrix* image_to_intensity_matrix(Image* image) {
+	Matrix* matrix = new_matrix(image->TellHeight(), image->TellWidth());
+
+	for (int i = 0; i < matrix->row_count; i++) {
+		for (int j = 0; j < matrix->column_count; j++) {
+			matrix->data[i][j] = image_get_pixel_intensity(image, j, i);
+		}
+	}
+
+	return matrix;
 }

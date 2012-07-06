@@ -24,8 +24,11 @@ bin/grayscale: $(TARGET)
 bin/threshold: $(TARGET)
 	$(CXX) $(LIBS) -o bin/threshold threshold.cpp $(TARGET)
 
-run: bin/grayscale bin/threshold
-	./bin/threshold examples/lenna.bmp examples/lenna_processed.bmp
+bin/convolution: $(TARGET)
+	$(CXX) $(LIBS) -o bin/convolution convolution.cpp $(TARGET)
+
+run: bin/grayscale bin/threshold bin/convolution
+	./bin/convolution examples/1_20x40.bmp examples/2_10x20.bmp examples/convolution.bmp
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)

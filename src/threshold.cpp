@@ -1,5 +1,6 @@
-#include "threshold.h"
 #include <cassert>
+#include "image.h"
+#include "threshold.h"
 
 Image* image_threshold(Image* image, int value) {
 	Image* output = image_blank_copy(image);
