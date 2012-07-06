@@ -1,6 +1,6 @@
 CC=cc $(CFLAGS)
 CXX=g++ $(CFLAGS)
-CFLAGS=-g -O2 -Wall -Wextra -I./src -I./lib -rdynamic -DNDEBUG $(OPTFLAGS)
+CFLAGS=-g -O2 -Wall -Wextra -I./src -I./lib -rdynamic $(OPTFLAGS)
 LIBS=-ldl $(OPTLIBS)
 PREFIX?=/usr/local
 
