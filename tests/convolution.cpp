@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 
 	printf("Max value: %d\n", max_value);
 	printf("Max possible value: %d\n", max_possible_value);
-	printf("Ratio: %d%\n", (max_value * 100) / max_possible_value);
+	printf("Ratio: %d%%\n", (max_value * 100) / max_possible_value);
 
 	image_to_file(output, argv[3]);
 

@@ -17,17 +17,17 @@ Image* image_convolution(Image* image, Matrix* matrix) {
 	int left   =	      (matrix->column_count / 2);
 	int right  = width -  (matrix->column_count / 2 + matrix->column_count % 2) + 1;
 
-	for (int i = top; i < bottom ; i++) {
-		for (int j = left; j < right; j++) {
-			assert(i < image_height(image));
-			assert(j < image_width(image));
-			assert(i - top < image_height(output));
-			assert(j - left < image_width(output));
-			assert(i - top >= 0);
-			assert(j - left >= 0);
+	for (int y = top; y < bottom ; y++) {
+		for (int x = left; x < right; x++) {
+			assert(y < image_height(image));
+			assert(x < image_width(image));
+			assert(y - top < image_height(output));
+			assert(x - left < image_width(output));
+			assert(y - top >= 0);
+			assert(x - left >= 0);
 
-			int value = pixel_convolution(image, matrix, i, j);
-			image_set_pixel_intensity(output, j - left, i - top, value);
+			int value = pixel_convolution(image, matrix, y, x);
+			image_set_pixel_intensity(output, x - left, y - top, value);
 		}
 	}
 
@@ -39,15 +39,15 @@ int pixel_convolution(Image* image, Matrix* matrix, int top, int left) {
 	int top_offset  = top - matrix->row_count / 2;
 	int left_offset = left - matrix->column_count / 2;
 
-	for (int i = 0; i < matrix->row_count; i++) {
-		for (int j = 0; j < matrix->column_count; j++) {
-			assert(i + top_offset < image_height(image));
-			assert(j + left_offset < image_width(image));
-			assert(i + top_offset >= 0);
-			assert(j + left_offset >= 0);
+	for (int y = 0; y < matrix->row_count; y++) {
+		for (int x = 0; x < matrix->column_count; x++) {
+			assert(y + top_offset < image_height(image));
+			assert(x + left_offset < image_width(image));
+			assert(y + top_offset >= 0);
+			assert(x + left_offset >= 0);
 
-			int matrix_value = matrix->data[i][j] / 255.0;
-			int pixel_value  = image_get_pixel_intensity(image, left_offset + j, top_offset + i) / 255.0;
+			int matrix_value = matrix->data[y][x] / 255.0;
+			int pixel_value  = image_get_pixel_intensity(image, left_offset + x, top_offset + y) / 255.0;
 
 			value += matrix_value * pixel_value;
 		}

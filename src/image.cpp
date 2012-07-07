@@ -32,17 +32,17 @@ int image_width(Image* image) {
 	return image->TellWidth();
 }
 
-Pixel& image_get_pixel(Image* image, int i, int j) {
-	return *(image->operator()(i, j));
+Pixel& image_get_pixel(Image* image, int x, int y) {
+	return *(image->operator()(x, y));
 }
 
 // This assumes that the image is already grayscale
-int image_get_pixel_intensity(Image* image, int i, int j) {
-	return image_get_pixel(image, i, j).Blue;
+int image_get_pixel_intensity(Image* image, int x, int y) {
+	return image_get_pixel(image, x, y).Blue;
 }
 
-void image_set_pixel_intensity(Image* image, int i, int j, int intensity) {
-	Pixel& pixel = image_get_pixel(image, i, j);
+void image_set_pixel_intensity(Image* image, int x, int y, int intensity) {
+	Pixel& pixel = image_get_pixel(image, x, y);
 
 	pixel.Red   = intensity;
 	pixel.Green = intensity;
@@ -50,9 +50,9 @@ void image_set_pixel_intensity(Image* image, int i, int j, int intensity) {
 }
 
 void image_invert(Image* image) {
-	for (int i = 0; i < image_width(image); i++) {
-		for (int j = 0; j < image_height(image); j++) {
-			Pixel& pixel = image_get_pixel(image, i, j);
+	for (int x = 0; x < image_width(image); x++) {
+		for (int y = 0; y < image_height(image); y++) {
+			Pixel& pixel = image_get_pixel(image, x, y);
 
 			pixel.Red   = 255 - pixel.Red;
 			pixel.Green = 255 - pixel.Green;
@@ -64,9 +64,9 @@ void image_invert(Image* image) {
 int image_max_intensity(Image* image) {
 	int max = 0;
 
-	for (int i = 0; i < image_width(image); i++) {
-		for (int j = 0; j < image_height(image); j++) {
-			int value = image_get_pixel_intensity(image, i, j);
+	for (int x = 0; x < image_width(image); x++) {
+		for (int y = 0; y < image_height(image); y++) {
+			int value = image_get_pixel_intensity(image, x, y);
 
 			if (max < value) {
 				max = value;
@@ -84,9 +84,9 @@ void image_to_file(Image* image, const char* filename) {
 Matrix* image_to_intensity_matrix(Image* image) {
 	Matrix* matrix = new_matrix(image->TellHeight(), image->TellWidth());
 
-	for (int i = 0; i < matrix->row_count; i++) {
-		for (int j = 0; j < matrix->column_count; j++) {
-			matrix->data[i][j] = image_get_pixel_intensity(image, j, i);
+	for (int y = 0; y < matrix->row_count; y++) {
+		for (int x = 0; x < matrix->column_count; x++) {
+			matrix->data[y][x] = image_get_pixel_intensity(image, x, y);
 		}
 	}
 

@@ -7,14 +7,14 @@ Image* image_threshold(Image* image, int value) {
 	int height    = image_height(image);
 	int width     = image_width(image);
 
-	for (int j = 0; j < width; j++) {
-		for (int i = 0; i < height; i++) {
-			int intensity = image_get_pixel_intensity(image, i, j);
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			int intensity = image_get_pixel_intensity(image, x, y);
 
 			if (intensity > value) {
-				image_set_pixel_intensity(output, i, j, 255);
+				image_set_pixel_intensity(output, x, y, 255);
 			} else {
-				image_set_pixel_intensity(output, i, j, 0);
+				image_set_pixel_intensity(output, x, y, 0);
 			}
 		}
 	}
@@ -35,9 +35,9 @@ Image* image_iterative_threshold(Image* image) {
 		int foreground_values = 0;
 		int foreground_count  = 0;
 
-		for (int j = 0; j < width; j++) {
-			for (int i = 0; i < height; i++) {
-				int intensity = image_get_pixel_intensity(image, i, j);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				int intensity = image_get_pixel_intensity(image, x, y);
 
 				if (intensity > current_value) {
 					foreground_values += intensity;

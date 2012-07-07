@@ -16,9 +16,9 @@ void free_image(Image* image);
 
 int image_height(Image* image);
 int image_width(Image* image);
-Pixel &image_get_pixel(Image* image, int i, int j);
-int image_get_pixel_intensity(Image* image, int i, int j);
-void image_set_pixel_intensity(Image* image, int i, int j, int intensity);
+Pixel &image_get_pixel(Image* image, int x, int y);
+int image_get_pixel_intensity(Image* image, int x, int y);
+void image_set_pixel_intensity(Image* image, int x, int y, int intensity);
 void image_invert(Image* image);
 int image_max_intensity(Image* image);
 
