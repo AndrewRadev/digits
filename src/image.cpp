@@ -61,6 +61,22 @@ void image_invert(Image* image) {
 	}
 }
 
+int image_max_intensity(Image* image) {
+	int max = 0;
+
+	for (int i = 0; i < image_width(image); i++) {
+		for (int j = 0; j < image_height(image); j++) {
+			int value = image_get_pixel_intensity(image, i, j);
+
+			if (max < value) {
+				max = value;
+			}
+		}
+	}
+
+	return max;
+}
+
 void image_to_file(Image* image, const char* filename) {
 	image->WriteToFile(filename);
 }

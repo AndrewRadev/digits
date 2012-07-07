@@ -25,6 +25,8 @@ int main(int argc, char* argv[])
 	Matrix* template_matrix = image_to_intensity_matrix(template_image);
 	Image* output = image_convolution(image, template_matrix);
 
+	printf("Max value: %d\n", image_max_intensity(output));
+
 	image_to_file(output, argv[3]);
 
 	free_image(output);
