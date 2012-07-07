@@ -49,6 +49,18 @@ void image_set_pixel_intensity(Image* image, int i, int j, int intensity) {
 	pixel.Blue  = intensity;
 }
 
+void image_invert(Image* image) {
+	for (int i = 0; i < image_width(image); i++) {
+		for (int j = 0; j < image_height(image); j++) {
+			Pixel& pixel = image_get_pixel(image, i, j);
+
+			pixel.Red   = 255 - pixel.Red;
+			pixel.Green = 255 - pixel.Green;
+			pixel.Blue  = 255 - pixel.Blue;
+		}
+	}
+}
+
 void image_to_file(Image* image, const char* filename) {
 	image->WriteToFile(filename);
 }

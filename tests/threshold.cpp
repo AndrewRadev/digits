@@ -1,6 +1,6 @@
-#include "src/image.h"
-#include "src/grayscale.h"
-#include "src/threshold.h"
+#include <image.h>
+#include <grayscale.h>
+#include <threshold.h>
 #include <iostream>
 
 using namespace std;

@@ -1,8 +1,8 @@
-#include "dbg.h"
-#include "src/image.h"
-#include "src/matrix.h"
-#include "src/grayscale.h"
-#include "src/convolution.h"
+#include <dbg.h>
+#include <image.h>
+#include <matrix.h>
+#include <grayscale.h>
+#include <convolution.h>
 #include <iostream>
 
 using namespace std;
@@ -16,10 +16,13 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	Image* image            = image_from_file(argv[1]);
-	Image* template_image   = image_from_file(argv[2]);
-	Matrix* template_matrix = image_to_intensity_matrix(template_image);
+	Image* image          = image_from_file(argv[1]);
+	Image* template_image = image_from_file(argv[2]);
 
+	image_invert(image);
+	image_invert(template_image);
+
+	Matrix* template_matrix = image_to_intensity_matrix(template_image);
 	Image* output = image_convolution(image, template_matrix);
 
 	image_to_file(output, argv[3]);
