@@ -18,8 +18,8 @@ int image_height(Image* image);
 int image_width(Image* image);
 Pixel &image_get_pixel(Image* image, int i, int j);
 int image_get_pixel_intensity(Image* image, int i, int j);
-
 void image_set_pixel_intensity(Image* image, int i, int j, int intensity);
+int image_invert(Image* image);
 
 Matrix* image_to_intensity_matrix(Image* image);
 void image_to_file(Image* image, const char* filename);

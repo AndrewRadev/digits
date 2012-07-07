@@ -19,13 +19,16 @@ dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
 dev: all
 
 bin/grayscale: $(TARGET)
-	$(CXX) $(LIBS) -o bin/grayscale grayscale.cpp $(TARGET)
+	$(CXX) $(LIBS) -o bin/grayscale tests/grayscale.cpp $(TARGET)
 
 bin/threshold: $(TARGET)
-	$(CXX) $(LIBS) -o bin/threshold threshold.cpp $(TARGET)
+	$(CXX) $(LIBS) -o bin/threshold tests/threshold.cpp $(TARGET)
 
 bin/convolution: $(TARGET)
-	$(CXX) $(LIBS) -o bin/convolution convolution.cpp $(TARGET)
+	$(CXX) $(LIBS) -o bin/convolution tests/convolution.cpp $(TARGET)
+
+bin/invert: $(TARGET)
+	$(CXX) $(LIBS) -o bin/invert tests/invert.cpp $(TARGET)
 
 run: bin/grayscale bin/threshold bin/convolution
 	./bin/convolution examples/1_20x40.bmp examples/2_10x20.bmp examples/convolution.bmp
