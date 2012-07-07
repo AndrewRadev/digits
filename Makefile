@@ -34,7 +34,7 @@ bin/scale: $(TARGET)
 	$(CXX) $(LIBS) -o bin/scale tests/scale.cpp $(TARGET)
 
 run: bin/grayscale bin/threshold bin/convolution bin/invert bin/scale
-	./bin/scale examples/lenna_small.bmp 512 512 examples/lenna_small_resized.bmp
+	./bin/scale samples/2.bmp 200 200 examples/output.bmp
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)

@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	}
 
 	Image* image = image_from_file(argv[1]);
-	Image* output = image_scale(image, atoi(argv[2]), atoi(argv[3]));
+	Image* output = image_scale(image, atoi(argv[2]), atoi(argv[3]), 255);
 	image_to_file(output, argv[4]);
 
 	free_image(output);
