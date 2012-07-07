@@ -24,8 +24,14 @@ int main(int argc, char* argv[])
 
 	Matrix* template_matrix = image_to_intensity_matrix(template_image);
 	Image* output = image_convolution(image, template_matrix);
+	Image* auto_convolution = image_convolution(template_image, template_matrix);
 
-	printf("Max value: %d\n", image_max_intensity(output));
+	int max_value = image_max_intensity(output);
+	int max_possible_value = image_max_intensity(auto_convolution);
+
+	printf("Max value: %d\n", max_value);
+	printf("Max possible value: %d\n", max_possible_value);
+	printf("Ratio: %d%\n", (max_value * 100) / max_possible_value);
 
 	image_to_file(output, argv[3]);
 

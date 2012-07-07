@@ -31,7 +31,7 @@ bin/invert: $(TARGET)
 	$(CXX) $(LIBS) -o bin/invert tests/invert.cpp $(TARGET)
 
 run: bin/grayscale bin/threshold bin/convolution bin/invert
-	./bin/convolution examples/1_20x40.bmp samples/2.bmp examples/convolution.bmp
+	./bin/convolution samples/1.bmp samples/1.bmp examples/convolution.bmp
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)

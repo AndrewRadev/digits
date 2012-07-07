@@ -5,15 +5,17 @@
 Image* image_convolution(Image* image, Matrix* matrix) {
 	int height     = image_height(image);
 	int width      = image_width(image);
-	int new_height = height - matrix->row_count;
-	int new_width  = width - matrix->column_count;
+	int new_height = (height - matrix->row_count) + 1;
+	int new_width  = (width - matrix->column_count) + 1;
+
+	debug("%d, %d, %d, %d", height, width, new_width, new_height);
 
 	Image* output = image_blank_copy(image, new_width, new_height);
 
 	int top    =	      (matrix->row_count    / 2);
-	int bottom = height - (matrix->row_count    / 2 + matrix->row_count % 2);
+	int bottom = height - (matrix->row_count    / 2 + matrix->row_count % 2) + 1;
 	int left   =	      (matrix->column_count / 2);
-	int right  = width -  (matrix->column_count / 2 + matrix->column_count % 2);
+	int right  = width -  (matrix->column_count / 2 + matrix->column_count % 2) + 1;
 
 	for (int i = top; i < bottom ; i++) {
 		for (int j = left; j < right; j++) {
