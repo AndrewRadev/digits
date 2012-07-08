@@ -24,25 +24,25 @@ int image_match(Image* image, Image* template_image) {
 }
 
 int check_template(Image* image, Image* template_image) {
-	int original_height = image_height(template_image);
-	int new_height      = image_height(image);
+	int original_height = image_height(image);
+	int new_height      = image_height(template_image);
 	int new_width       = -1;
 	int max_match_ratio = 0;
 
-	while (new_height >= 13) {
-		new_width = (new_height / (float)image_height(template_image)) * image_width(template_image);
+	while (new_height <= original_height) {
+		new_width = (new_height / (float)image_height(image)) * image_width(image);
 
-		Image* resized_template_image = image_scale(template_image, new_width, new_height, 0);
-		int match_ratio = image_match(image, resized_template_image);
+		Image* resized_image = image_scale(image, new_width, new_height, 0);
+		int match_ratio = image_match(resized_image, template_image);
 		// printf("Height: %d, Ratio: %d\n", new_height, match_ratio);
 
-		free_image(resized_template_image);
+		free_image(resized_image);
 
 		if (max_match_ratio < match_ratio) {
 			max_match_ratio = match_ratio;
 		}
 
-		new_height -= 1;
+		new_height += 1;
 	}
 
 	return max_match_ratio;
