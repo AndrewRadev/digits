@@ -49,7 +49,6 @@ $(TARGET): build $(OBJECTS)
 	ranlib $@
 
 build:
-	@mkdir -p build
 	@mkdir -p bin
 
 # The Unit Tests
