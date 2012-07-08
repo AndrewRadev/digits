@@ -36,12 +36,14 @@ bin/scale: $(TARGET)
 bin/rotate: $(TARGET)
 	$(CXX) $(LIBS) -o bin/rotate tests/rotate.cpp $(TARGET)
 
+bin/trim: $(TARGET)
+	$(CXX) $(LIBS) -o bin/trim tests/trim.cpp $(TARGET)
+
 bin/main: $(TARGET)
 	$(CXX) $(LIBS) -o bin/main main.cpp $(TARGET)
 
-run: bin/grayscale bin/threshold bin/convolution bin/invert bin/scale bin/rotate bin/main
-	# ./bin/rotate experiments/example_3.bmp 45 output.bmp
-	./bin/main experiments/example_3.bmp
+run: bin/grayscale bin/threshold bin/convolution bin/invert bin/scale bin/rotate bin/trim bin/main
+	./bin/trim experiments/example_5.bmp output.bmp
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)
