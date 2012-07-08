@@ -40,7 +40,8 @@ bin/main: $(TARGET)
 	$(CXX) $(LIBS) -o bin/main main.cpp $(TARGET)
 
 run: bin/grayscale bin/threshold bin/convolution bin/invert bin/scale bin/rotate bin/main
-	./bin/rotate experiments/example_3.bmp 45 output.bmp
+	# ./bin/rotate experiments/example_3.bmp 45 output.bmp
+	./bin/main experiments/example_3.bmp
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)

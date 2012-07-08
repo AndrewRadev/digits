@@ -58,3 +58,23 @@ int pixel_convolution(Image* image, Matrix* matrix, int top, int left) {
 
 	return (int)(value * 255.0);
 }
+
+int image_max_convolution(Image* image, Matrix* template_matix, int padding) {
+	Image* full = image_blank_copy(image);
+	int width   = image_width(image);
+	int height  = image_height(image);
+
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			image_set_pixel_intensity(full, x, y, padding);
+		}
+	}
+
+	Image* convolution = image_convolution(full, template_matix);
+	int max_convolution = image_max_intensity(convolution);
+
+	free_image(convolution);
+	free_image(full);
+
+	return max_convolution;
+}
