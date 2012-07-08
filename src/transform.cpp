@@ -3,6 +3,10 @@
 #include "image.h"
 #include <cassert>
 
+float degrees_to_radians(float angle) {
+	return (angle * 3.14159265) / 180.0;
+}
+
 Image* image_scale(Image* image, int new_width, int new_height, int padding) {
 	int width     = image_width(image);
 	int height    = image_height(image);
@@ -19,6 +23,34 @@ Image* image_scale(Image* image, int new_width, int new_height, int padding) {
 			// int intensity = bilinear_intensity(image, original_x, original_y, padding);
 
 			image_set_pixel_intensity(output, x, y, intensity);
+		}
+	}
+
+	return output;
+}
+
+Image* image_rotate(Image* image, float angle, int padding) {
+	int width     = image_width(image);
+	int height    = image_height(image);
+	Image* output = image_blank_copy(image, width, height);
+
+	float radians = degrees_to_radians(angle);
+	int mid_x     = width / 2;
+	int mid_y     = height / 2;
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			float original_x = cos(radians)*(x - mid_x) + sin(radians)*(y - mid_y) + mid_x;
+			float original_y = -sin(radians)*(x - mid_x) + cos(radians)*(y - mid_y) + mid_y;
+
+			if (original_x >= width || original_y >= height || original_x < 0 || original_y < 0) {
+				image_set_pixel_intensity(output, x, y, padding);
+			} else {
+				// int intensity = image_get_pixel_intensity(image, original_x, original_y);
+				int intensity = bilinear_intensity(image, original_x, original_y, padding);
+
+				image_set_pixel_intensity(output, x, y, intensity);
+			}
 		}
 	}
 
