@@ -39,11 +39,14 @@ bin/rotate: $(TARGET)
 bin/trim: $(TARGET)
 	$(CXX) $(LIBS) -o bin/trim tests/trim.cpp $(TARGET)
 
+bin/trim: $(TARGET)
+	$(CXX) $(LIBS) -o bin/overlap tests/overlap.cpp $(TARGET)
+
 bin/main: $(TARGET)
 	$(CXX) $(LIBS) -o bin/main main.cpp $(TARGET)
 
-run: bin/grayscale bin/threshold bin/convolution bin/invert bin/scale bin/rotate bin/trim bin/main
-	./bin/trim experiments/example_5.bmp output.bmp
+run: bin/grayscale bin/threshold bin/convolution bin/invert bin/scale bin/rotate bin/trim bin/overlap bin/main
+	./bin/overlap templates/2.bmp templates/3.bmp
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)
