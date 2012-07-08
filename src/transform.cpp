@@ -14,7 +14,9 @@ Image* image_scale(Image* image, int new_width, int new_height, int padding) {
 		for (int x = 0; x < new_width; x++) {
 			float original_y = (int)y * y_ratio;
 			float original_x = (int)x * x_ratio;
-			int intensity    = bilinear_intensity(image, original_x, original_y, padding);
+			int intensity    = image_get_pixel_intensity(image, original_x, original_y);
+
+			// int intensity = bilinear_intensity(image, original_x, original_y, padding);
 
 			image_set_pixel_intensity(output, x, y, intensity);
 		}

@@ -8,8 +8,6 @@ Image* image_convolution(Image* image, Matrix* matrix) {
 	int new_height = (height - matrix->row_count) + 1;
 	int new_width  = (width - matrix->column_count) + 1;
 
-	debug("%d, %d, %d, %d", height, width, new_width, new_height);
-
 	Image* output = image_blank_copy(image, new_width, new_height);
 
 	int top    =	      (matrix->row_count    / 2);
@@ -35,7 +33,7 @@ Image* image_convolution(Image* image, Matrix* matrix) {
 }
 
 int pixel_convolution(Image* image, Matrix* matrix, int top, int left) {
-	int value       = 0;
+	float value     = 0;
 	int top_offset  = top - matrix->row_count / 2;
 	int left_offset = left - matrix->column_count / 2;
 
@@ -53,5 +51,10 @@ int pixel_convolution(Image* image, Matrix* matrix, int top, int left) {
 		}
 	}
 
-	return (int)((value / (float)(matrix->row_count * matrix->column_count)) * 255.0);;
+	value /= (float)(matrix->row_count * matrix->column_count);
+
+	assert(value >= 0);
+	assert(value <= 1);
+
+	return (int)(value * 255.0);
 }

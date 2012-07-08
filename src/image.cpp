@@ -49,7 +49,7 @@ void image_set_pixel_intensity(Image* image, int x, int y, int intensity) {
 	pixel.Blue  = intensity;
 }
 
-void image_invert(Image* image) {
+Image* image_invert(Image* image) {
 	for (int x = 0; x < image_width(image); x++) {
 		for (int y = 0; y < image_height(image); y++) {
 			Pixel& pixel = image_get_pixel(image, x, y);
@@ -59,6 +59,8 @@ void image_invert(Image* image) {
 			pixel.Blue  = 255 - pixel.Blue;
 		}
 	}
+
+	return image;
 }
 
 int image_max_intensity(Image* image) {
