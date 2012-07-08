@@ -11,64 +11,47 @@ Image* image_trim(Image* image, int blank_value) {
 	int left   = 0;
 	int right  = width - 1;
 
-	bool found = false;
-
-	// left to right
-	found = false;
+left_to_right:
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
 			if (image_get_pixel_intensity(image, x, y) != blank_value) {
 				left = x;
-				found = true;
-				break;
+				goto right_to_left;
 			}
 		}
-
-		if (found) { break; }
 	}
 
-	// right to left
-	found = false;
+right_to_left:
 	for (int x = width - 1; x >= 0; x--) {
 		for (int y = 0; y < height; y++) {
 			if (image_get_pixel_intensity(image, x, y) != blank_value) {
 				right = x;
-				found = true;
-				break;
+				goto top_to_bottom;
 			}
 		}
-
-		if (found) { break; }
 	}
 
-	// top to bottom
-	found = false;
+top_to_bottom:
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			if (image_get_pixel_intensity(image, x, y) != blank_value) {
 				top = y;
-				found = true;
-				break;
+				goto bottom_to_top;
 			}
 		}
-
-		if (found) { break; }
 	}
 
-	// bottom to top
-	found = false;
+bottom_to_top:
 	for (int y = height - 1; y >= 0; y--) {
 		for (int x = 0; x < width; x++) {
 			if (image_get_pixel_intensity(image, x, y) != blank_value) {
 				bottom = y;
-				found = true;
-				break;
+				goto finish;
 			}
 		}
-
-		if (found) { break; }
 	}
 
+finish:
 	Image* trimmed_image = image_blank_copy(image, right - left + 1, bottom - top + 1);
 
 	for (int x = 0; x < image_width(trimmed_image); x++) {
