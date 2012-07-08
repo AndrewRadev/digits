@@ -29,7 +29,7 @@ int check_template(Image* image, Image* template_image) {
 	int new_width       = -1;
 	int max_match_ratio = 0;
 
-	while (new_height >= original_height) {
+	while (new_height >= 13) {
 		new_width = (new_height / (float)image_height(template_image)) * image_width(template_image);
 
 		Image* resized_template_image = image_scale(template_image, new_width, new_height, 0);
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 		ratio = check_template(image, templates[i]);
 		printf("%d%%\n", ratio);
 
-		if (ratio > 80) {
+		if (ratio == 100) {
 			printf("Good match found: %d\n", i);
 			return 0;
 		}
