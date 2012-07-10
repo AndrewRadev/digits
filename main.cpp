@@ -1,5 +1,6 @@
 #include <dbg.h>
 #include <image.h>
+#include <image_template.h>
 #include <convolution.h>
 #include <transform.h>
 #include <trim.h>
@@ -7,10 +8,9 @@
 
 using namespace std;
 
-int image_match(Image* image, Image* template_image) {
-	Matrix* template_matrix = image_to_intensity_matrix(template_image);
-	Image* output           = image_convolution(image, template_matrix);
-	Image* auto_convolution = image_convolution(template_image, template_matrix);
+int image_match(Image* image, ImageTemplate* image_template) {
+	Image* output           = image_convolution(image, image_template->matrix);
+	Image* auto_convolution = image_convolution(image_template->image, image_template->matrix);
 	int max_value           = image_max_intensity(output);
 	int max_possible_value  = image_max_intensity(auto_convolution);
 
@@ -24,10 +24,10 @@ int image_match(Image* image, Image* template_image) {
 	}
 }
 
-int check_template(Image* image, Image* template_image) {
+int check_template(Image* image, ImageTemplate* image_template) {
 	Image* trimmed_image = image_trim(image, 0);
-	Image* resized_image = image_scale(trimmed_image, image_width(template_image), image_height(template_image), 0);
-	int match_ratio = image_match(resized_image, template_image);
+	Image* resized_image = image_scale(trimmed_image, image_width(image_template->image), image_height(image_template->image), 0);
+	int match_ratio = image_match(resized_image, image_template);
 
 	free_image(resized_image);
 	free_image(trimmed_image);
@@ -48,33 +48,42 @@ int main(int argc, char* argv[])
 
 	Image* image = image_invert(image_from_file(argv[1]));
 
-	Image* templates[10];
-	templates[0] = image_invert(image_from_file("templates/0.bmp"));
-	templates[1] = image_invert(image_from_file("templates/1.bmp"));
-	templates[2] = image_invert(image_from_file("templates/2.bmp"));
-	templates[3] = image_invert(image_from_file("templates/3.bmp"));
-	templates[4] = image_invert(image_from_file("templates/4.bmp"));
-	templates[5] = image_invert(image_from_file("templates/5.bmp"));
-	templates[6] = image_invert(image_from_file("templates/6.bmp"));
-	templates[7] = image_invert(image_from_file("templates/7.bmp"));
-	templates[8] = image_invert(image_from_file("templates/8.bmp"));
-	templates[9] = image_invert(image_from_file("templates/9.bmp"));
+	ImageTemplate* templates[10];
+	templates[0] = new_image_template(0, "templates/0.bmp", 80);
+	templates[1] = new_image_template(0, "templates/1.bmp", 80);
+	templates[2] = new_image_template(0, "templates/2.bmp", 80);
+	templates[3] = new_image_template(0, "templates/3.bmp", 80);
+	templates[4] = new_image_template(0, "templates/4.bmp", 80);
+	templates[5] = new_image_template(0, "templates/5.bmp", 80);
+	templates[6] = new_image_template(0, "templates/6.bmp", 80);
+	templates[7] = new_image_template(0, "templates/7.bmp", 80);
+	templates[8] = new_image_template(0, "templates/8.bmp", 80);
+	templates[9] = new_image_template(0, "templates/9.bmp", 80);
 
 	int ratio = 0;
+	int max_ratio = -1;
+	ImageTemplate* max_template = NULL;
 
 	for (int i = 0; i < 10; i++) {
 		printf("Checking for match with %d... ", i);
 		ratio = check_template(image, templates[i]);
 		printf("%d%%\n", ratio);
 
-		if (ratio == 100) {
-			printf("Good match found: %d\n", i);
+		if (ratio >= templates[i]->threshold) {
+			print_image_match(templates[i], ratio);
 			return 0;
+		}
+
+		if (max_ratio <= ratio) {
+			max_ratio = ratio;
+			max_template = templates[i];
 		}
 	}
 
+	print_image_match(max_template, max_ratio);
+
 	for (int i = 0; i < 10; i++) {
-		free_image(templates[i]);
+		free_image_template(templates[i]);
 	}
 	free_image(image);
 	return 0;
