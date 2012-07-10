@@ -2,6 +2,7 @@
 #include <image.h>
 #include <convolution.h>
 #include <transform.h>
+#include <trim.h>
 #include <iostream>
 
 using namespace std;
@@ -24,28 +25,14 @@ int image_match(Image* image, Image* template_image) {
 }
 
 int check_template(Image* image, Image* template_image) {
-	int original_height = image_height(image);
-	int new_height      = image_height(template_image);
-	int new_width       = -1;
-	int max_match_ratio = 0;
+	Image* trimmed_image = image_trim(image, 0);
+	Image* resized_image = image_scale(trimmed_image, image_width(template_image), image_height(template_image), 0);
+	int match_ratio = image_match(resized_image, template_image);
 
-	while (new_height <= original_height) {
-		new_width = (new_height / (float)image_height(image)) * image_width(image);
+	free_image(resized_image);
+	free_image(trimmed_image);
 
-		Image* resized_image = image_scale(image, new_width, new_height, 0);
-		int match_ratio = image_match(resized_image, template_image);
-		// printf("Height: %d, Ratio: %d\n", new_height, match_ratio);
-
-		free_image(resized_image);
-
-		if (max_match_ratio < match_ratio) {
-			max_match_ratio = match_ratio;
-		}
-
-		new_height += 1;
-	}
-
-	return max_match_ratio;
+	return match_ratio;
 }
 
 int main(int argc, char* argv[])
