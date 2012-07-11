@@ -26,9 +26,8 @@ int image_match(Image* image, ImageTemplate* image_template) {
 	}
 }
 
-int check_template(Image* image, ImageTemplate* image_template) {
-	float rotation      = -45;
-	float rotation_step = 1;
+int check_template(Image* image, ImageTemplate* image_template, float rotation_step) {
+	float rotation = -45;
 
 	Image* rotated_image     = NULL;
 	Image* trimmed_image     = NULL;
@@ -81,6 +80,7 @@ int main(int argc, char* argv[])
 	}
 
 	Image* image = image_invert(image_from_file(argv[1]));
+	float rotation_step = min_rotation_step(image);
 
 	ImageTemplate* templates[10];
 	templates[0] = new_image_template(0, "templates/0.bmp", 90);
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < 10; i++) {
 		printf("Checking for match with %d... ", i);
-		ratio = check_template(image, templates[i]);
+		ratio = check_template(image, templates[i], rotation_step);
 		printf("%d%%\n", ratio);
 
 		if (ratio >= templates[i]->threshold) {

@@ -88,3 +88,32 @@ int bilinear_intensity(Image* image, float x, float y, int padding) {
 		return (1 - delta_y)*top + delta_y*bottom;
 	}
 }
+
+float min_rotation_step(Image* image) {
+	int width  = image_width(image);
+	int height = image_height(image);
+	int mid_x  = width / 2;
+	int mid_y  = height / 2;
+
+	float degrees   = 45;
+	float radians   = degrees_to_radians(45);
+	float x         = 0;
+	float y         = 0;
+	float current_x = 0;
+	float current_y = 0;
+	float next_x    = cos(radians)*(x - mid_x) + sin(radians)*(y - mid_y) + mid_x;
+	float next_y    = -sin(radians)*(x - mid_x) + cos(radians)*(y - mid_y) + mid_y;
+
+	do {
+		current_x = next_x;
+		current_y = next_y;
+
+		degrees /= 2.0;
+		radians = degrees_to_radians(degrees);
+
+		next_x = cos(radians)*(x - mid_x) + sin(radians)*(y - mid_y) + mid_x;
+		next_y = -sin(radians)*(x - mid_x) + cos(radians)*(y - mid_y) + mid_y;
+	} while (abs(next_x - current_x) > 1 || abs(next_y - current_y) > 1);
+
+	return degrees;
+}
