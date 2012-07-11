@@ -1,13 +1,18 @@
+#include "threshold.h"
 #include "image_template.h"
 
 ImageTemplate* new_image_template(int digit, const char* filename, int threshold) {
 	ImageTemplate* image_template = (ImageTemplate*)malloc(sizeof(ImageTemplate));
+	Image* image                  = image_invert(image_from_file(filename));
+	Image* thresholded_image      = image_iterative_threshold(image);
 
 	image_template->digit     = digit;
-	image_template->image     = image_invert(image_from_file(filename));
+	image_template->image     = thresholded_image;
 	image_template->matrix    = image_to_intensity_matrix(image_template->image);
 	image_template->threshold = threshold;
 	image_template->rotation  = 0;
+
+	free_image(image);
 
 	return image_template;
 }

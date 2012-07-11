@@ -21,6 +21,7 @@ Image* image_blank_copy(Image* image) {
 }
 
 void free_image(Image* image) {
+	if (!image) { return; }
 	delete image;
 }
 

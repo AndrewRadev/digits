@@ -46,7 +46,7 @@ bin/main: $(TARGET)
 	$(CXX) $(LIBS) -o bin/main main.cpp $(TARGET)
 
 run: bin/grayscale bin/threshold bin/convolution bin/invert bin/scale bin/rotate bin/trim bin/overlap bin/squeeze_match bin/main
-	./bin/main experiments/example_3.bmp
+	./bin/main experiments/example_rotated.bmp
 
 $(TARGET): CFLAGS += -fPIC
 $(TARGET): build $(OBJECTS)
