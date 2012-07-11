@@ -34,6 +34,9 @@ int check_template(Image* image, ImageTemplate* image_template, float rotation_s
 	Image* resized_image     = NULL;
 	Image* thresholded_image = NULL;
 
+	int width = image_width(image_template->image);
+	int height = image_height(image_template->image);
+
 	int max_match_ratio      = -1;
 	float max_match_rotation = -45;
 
@@ -46,13 +49,13 @@ int check_template(Image* image, ImageTemplate* image_template, float rotation_s
 		}
 
 		trimmed_image = image_trim(thresholded_image, 0);
-		resized_image = image_scale(trimmed_image, image_width(image_template->image), image_height(image_template->image), 0);
-
+		resized_image = image_scale(trimmed_image, width, height, 0);
 		int match_ratio = image_match(resized_image, image_template);
 
 		if (max_match_ratio < match_ratio) {
 			max_match_ratio = match_ratio;
 			max_match_rotation = rotation;
+			debug_image_overlap(resized_image, image_template->image, "debug.bmp");
 		}
 
 		if (thresholded_image) { free_image(thresholded_image); rotated_image = NULL; }
@@ -88,7 +91,7 @@ int main(int argc, char* argv[])
 	templates[2] = new_image_template(2, "templates/2.bmp", 85);
 	templates[3] = new_image_template(3, "templates/3.bmp", 90);
 	templates[4] = new_image_template(4, "templates/4.bmp", 80);
-	templates[5] = new_image_template(5, "templates/5.bmp", 80);
+	templates[5] = new_image_template(5, "templates/5.bmp", 85);
 	templates[6] = new_image_template(6, "templates/6.bmp", 80);
 	templates[7] = new_image_template(7, "templates/7.bmp", 80);
 	templates[8] = new_image_template(8, "templates/8.bmp", 80);

@@ -22,7 +22,6 @@ Image* image_threshold(Image* image, int value) {
 	return output;
 }
 
-// TODO: consider using Otsu
 Image* image_iterative_threshold(Image* image) {
 	int height         = image_height(image);
 	int width          = image_width(image);
